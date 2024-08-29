@@ -1,11 +1,12 @@
-'use client'
+'use client';
 
 import { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
-import PostList from './components/posts/PostList';
-import SearchBar from './components/SearchBar';
-import TableFooter from './components/table/TableFooter';
+import { RootState } from '../../store/store';
+import { ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/outline';
+import PostList from '../components/posts/PostList';
+import SearchBar from '../components/SearchBar';
+import TableFooter from '../components/table/TableFooter';
 
 interface Post {
   id: number;
@@ -16,7 +17,7 @@ interface Post {
   created_at: string;
 }
 
-const HomePage = () => {
+export default function PostsPage() {
   const posts = useSelector((state: RootState) => state.posts.posts);
 
   const [search, setSearch] = useState('')
@@ -47,6 +48,7 @@ const HomePage = () => {
       }
     });
   };
+  
 
   const totalItems = filteredPosts().length;
 
@@ -57,10 +59,13 @@ const HomePage = () => {
   }, [actualPage, itemsPerPage, posts, search, sortBy, sortDesc]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-8">Bem-vindo ao Blog</h1>
+    <div className="container mx-auto px-4">
+    <div className="flex items-center px-8 py-4 my-4 space-x-2 text-2xl font-semibold">
+        <ChatBubbleLeftEllipsisIcon className="mt-2 h-8 w-8 text-blue-500" />
+        <h1>Posts</h1>
+    </div>
       <SearchBar search={search} setSearch={setSearch}/>
-      <PostList posts={currentItems} search={search} />
+      <PostList posts={currentItems} search={search}/>
       <TableFooter
           actualPage={actualPage}
           itemsPerPage={itemsPerPage}
@@ -73,6 +78,4 @@ const HomePage = () => {
       />
     </div>
   );
-};
-
-export default HomePage;
+}
